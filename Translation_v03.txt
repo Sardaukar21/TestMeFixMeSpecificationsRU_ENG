@@ -1,0 +1,137 @@
+# Specification
+
+All requests exept get-token and register require header autorization:
+Authorization: <get-token result>
+
+1. GET /set-amount  
+   ```
+    query settings(params*):
+   ```
+   | Name          | Type      | Required *           | Restictions                  |
+   | :-----------: |:---------:|:--------------------:|:----------------------------:|
+   | value         | double    | yes                  | Above zero                  |
+   
+Scenario (Script?*):  
+   1. Method gets number(param*)(value) (as imput*)
+   2. Sets user amount as value    
+   3. Returns json (as output*)in form(??? Format):  
+   ```json
+   {  
+    "result":"Your amount of money is 10"  
+   }  
+   ```  
+---
+2. GET /get-amount   
+Scenario:
+   1. Method returns amount value
+   2. Return(s) json in form:
+   ```json
+   {
+    "result":"Your amount of money is 10"
+   }
+   ```
+
+---
+2. GET /add-one
+Scenario:
+   1. Method add 1(one) to amount value
+   2. Return json in form:
+   ```json
+   {
+    "result":"Your amount of money is 11"
+   }
+   ```
+
+(Result contains text(???): Your amount of money is + "value" parameter
+
+Amount value by default equals 0(zero)
+
+---
+4. POST /get-token
+   ```
+    Description of body request:
+   ```
+   | Name          | Type      | Crucial              | Restictions                  |
+   | :-----------: |:---------:|:--------------------:|:----------------------------:|
+   | username      | String    | yes                  | Above zero                  |
+   | pwd           | String    | yes                  | Above zero                  |
+   | email         | String    | yes                  | Above zero                  |
+   ```
+     Request body example (, example of request body ):
+   ```
+   ```json
+    {
+      "username": "username",
+      "pwd": "password",
+      "email": "some email"
+    }
+   ```
+
+   Scenario:
+   1. Method search user in DB
+   2. Method form token for access user to service(????)
+   3. Return json in form:
+   ```json
+   {
+   "result":"Bearer <token-value>"
+   }
+   ```
+
+---
+
+5. POST /register
+   ```
+    Description of body request:
+   ```
+   | Name          | Type      | Crucial              | Restictions                  |
+   | :-----------: |:---------:|:--------------------:|:----------------------------:|
+   | username      | String    | yes                  | Above zero                  |
+   | pwd           | String    | yes                  | Above zero                  |
+   | email         | String    | yes                  | Above zero                  |
+   ```
+     Example body request:
+   ```
+   ```json
+    {
+      "username": "username",
+      "pwd": "password",
+      "email": "some email"
+    }
+   ```
+   Scenario:
+   1. Method registers new user
+      1. Method generates unique user key
+      2. Method saves user data in DB
+   2. Return json in form:
+   ```json
+   {
+    "result":"success"
+   }
+   ```
+---
+### Error prossecing  
+   If any error appeares during application opperation(runtime???) user must resive message in the next format: ???
+   ```json
+   {
+     "timestamp": "04-07-2021 08:57:39",
+     "status": "ERROR",
+     "message": "error description"
+   }
+   ```
+
+## How to start application
+java -jar server-*version*-.jar  
+Порт: 8080
+
+## Swagger
+
+[swagger](http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
+
+## Actuator
+
+[actuator](http://localhost:8080/actuator)
+
+## DB info
+
+For data storage application uses in-memory(in-build,native) DB h2.   
+You can find DB connection in file [application.properties](src/main/resources/application.properties)
